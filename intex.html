@@ -1,0 +1,366 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BISOU | Gafas de sol</title>
+
+  <!-- Model Viewer -->
+  <script type="module"
+    src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js">
+  </script>
+
+  <!-- Librería para generar el código QR -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --amarillo-pastel: #F9E79F;
+      --amarillo-claro: #FFF8D6;
+      --rojo-suave: #B84A4A;
+      --texto: #2D2D2D;
+      --blanco: #FFFFFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--amarillo-claro);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      padding: 35px 20px 20px;
+    }
+
+    .marca {
+      color: var(--rojo-suave);
+      font-size: 20px;
+      font-weight: bold;
+      letter-spacing: 4px;
+    }
+
+    h1 {
+      font-size: 38px;
+      margin: 12px 0;
+    }
+
+    .subtitulo {
+      max-width: 650px;
+      margin: auto;
+      font-size: 18px;
+    }
+
+    .producto {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 35px;
+      align-items: center;
+    }
+
+    .visor {
+      background: var(--blanco);
+      border-radius: 22px;
+      padding: 10px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    model-viewer {
+      width: 100%;
+      height: 500px;
+      background: var(--blanco);
+      border-radius: 18px;
+    }
+
+    .ar-button {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--rojo-suave);
+      color: var(--blanco);
+      border: none;
+      border-radius: 30px;
+      padding: 14px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .informacion {
+      background: var(--blanco);
+      padding: 30px;
+      border-radius: 22px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .informacion h2 {
+      color: var(--rojo-suave);
+      margin-bottom: 15px;
+    }
+
+    .descripcion {
+      margin-bottom: 20px;
+    }
+
+    .beneficios {
+      margin: 0 0 25px 20px;
+    }
+
+    .beneficios li {
+      margin-bottom: 8px;
+    }
+
+    .precio {
+      color: #777;
+      text-decoration: line-through;
+      font-size: 21px;
+      margin-bottom: 3px;
+    }
+
+    .promo {
+      color: var(--rojo-suave);
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    .ahorro {
+      font-weight: bold;
+      color: var(--rojo-suave);
+      margin: 8px 0 22px;
+    }
+
+    .boton {
+      display: inline-block;
+      background: var(--rojo-suave);
+      color: var(--blanco);
+      text-decoration: none;
+      padding: 15px 25px;
+      border-radius: 30px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .boton:hover {
+      background: #963939;
+    }
+
+    .seccion-qr {
+      max-width: 700px;
+      margin: 20px auto 50px;
+      padding: 35px 20px;
+      text-align: center;
+      background: var(--amarillo-pastel);
+      border-radius: 22px;
+    }
+
+    .seccion-qr h2 {
+      margin-bottom: 10px;
+      color: var(--rojo-suave);
+    }
+
+    .seccion-qr p {
+      margin-bottom: 20px;
+    }
+
+    #qrCode {
+      display: flex;
+      justify-content: center;
+      background: var(--blanco);
+      width: fit-content;
+      margin: auto;
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    .contacto {
+      text-align: center;
+      padding: 30px 20px;
+      background: var(--rojo-suave);
+      color: var(--blanco);
+    }
+
+    .contacto p {
+      margin: 5px 0;
+    }
+
+    @media (max-width: 800px) {
+      .producto {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      model-viewer {
+        height: 420px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .informacion {
+        padding: 22px;
+      }
+
+      .promo {
+        font-size: 30px;
+      }
+
+      model-viewer {
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+
+    <div class="marca">BISOU</div>
+
+    <h1>Gafas de sol</h1>
+
+    <p class="subtitulo">
+      Estilo, protección y personalidad en un solo accesorio.
+      Descubre tus nuevas gafas BISOU y visualízalas en 3D
+      antes de comprar.
+    </p>
+
+  </header>
+
+
+  <section class="producto">
+
+    <!-- VISOR 3D Y REALIDAD AUMENTADA -->
+    <div class="visor">
+
+      <model-viewer
+        src="modelo.glb"
+        alt="Modelo tridimensional de las gafas de sol BISOU"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        ar-placement="floor"
+        ar-scale="auto"
+        camera-controls
+        auto-rotate
+        shadow-intensity="1.2"
+        exposure="1"
+        touch-action="pan-y">
+
+        <button
+          class="ar-button"
+          slot="ar-button"
+          type="button">
+          Ver en mi espacio
+        </button>
+
+      </model-viewer>
+
+    </div>
+
+
+    <!-- INFORMACIÓN COMERCIAL -->
+    <div class="informacion">
+
+      <h2>Gafas de sol BISOU</h2>
+
+      <p class="descripcion">
+        Gafas de sol BISOU que combinan estilo y funcionalidad.
+        Diseñadas con materiales de buena calidad, filtro UV
+        y disponibles en una variedad de colores para complementar
+        tu estilo en cualquier ocasión.
+      </p>
+
+      <ul class="beneficios">
+        <li>Diseño moderno y versátil.</li>
+        <li>Materiales de buena calidad.</li>
+        <li>Filtro UV para mayor protección frente a los rayos solares.</li>
+        <li>Disponibles en variedad de colores.</li>
+        <li>Visualízalas en 3D antes de comprar.</li>
+        <li>Pruébalas en realidad aumentada desde un celular compatible.</li>
+      </ul>
+
+      <!-- ANCLAJE DE PRECIO -->
+      <p class="precio">
+        Antes: $150.000 COP
+      </p>
+
+      <p class="promo">
+        Ahora: $120.000 COP
+      </p>
+
+      <p class="ahorro">
+        ¡Ahorra $30.000 COP por tiempo limitado!
+      </p>
+
+      <button
+        class="boton"
+        type="button"
+        onclick="return false;">
+        Compra ahora y agrégalo a tu colección
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- CÓDIGO QR -->
+  <section class="seccion-qr">
+
+    <h2>Visualízalas desde tu celular</h2>
+
+    <p>
+      Escanea el código QR para abrir esta experiencia
+      y probar las gafas de sol BISOU en realidad aumentada.
+    </p>
+
+    <div id="qrCode"></div>
+
+  </section>
+
+
+  <!-- CONTACTO -->
+  <section class="contacto">
+
+    <p><strong>BISOU</strong></p>
+    <p>Bogotá, Colombia</p>
+    <p>WhatsApp: 304 243 7862</p>
+    <p>Instagram: @BISOU</p>
+    <p>Correo: BISOU@gmail.com</p>
+
+  </section>
+
+
+  <!-- GENERACIÓN DEL QR -->
+  <script>
+
+    const urlPublica = window.location.href;
+
+    new QRCode(document.getElementById("qrCode"), {
+      text: urlPublica,
+      width: 180,
+      height: 180
+    });
+
+  </script>
+
+</body>
+</html>
+```
